@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>똑똑한 장보기 · UN SDGs 12.3 모바일 스마트 마켓</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <a href="#main-content" class="skip-link visually-hidden">본문 바로가기</a>
+
+    <!-- 모바일 슬림 상단 헤더 (스크롤 시 자연스럽게 올라감) -->
+    <header class="mobile-header">
+      <div class="brand-row">
+        <h1 class="app-title">똑똑한 장보기</h1>
+        <span class="sdg-badge">SDGs 12.3</span>
+      </div>
+      <button type="button" id="open-quick-compare-btn" class="header-orange-btn">
+        ⚡ 1:1 비교
+      </button>
+    </header>
+
+    <!-- 메인 뷰포트 -->
+    <main id="main-content" class="app-body" tabindex="-1">
+      <!-- ===================================================
+           탭 1: 🛒 장보기 (매대 집중형)
+           =================================================== -->
+      <section id="panel-shop" class="tab-panel" role="tabpanel" aria-labelledby="tab-shop">
+        <!-- 닫기 가능한 슬림 1줄 인트로 배너 -->
+        <div id="intro-banner" class="intro-banner" role="note">
+          <p class="intro-banner-text">💡 100g당 가격에 속아 버리는 식비, 장보기 전 5초 만에 방어하세요! (UN SDGs 12.3 실천)</p>
+          <button type="button" id="close-intro-banner-btn" class="intro-close-btn" aria-label="안내 배너 닫기">✕</button>
+        </div>
+
+        <!-- 원클릭 장보기 세트 (가로 스크롤 알약) -->
+        <div class="section-block">
+          <span class="mini-section-label">⚡ 상황별 빠른 장보기 세트</span>
+          <div class="h-scroll-row" role="group" aria-label="상황별 빠른 장보기 세트">
+            <button type="button" class="preset-pill" data-set="pork-party">🥩 삼겹살 파티</button>
+            <button type="button" class="preset-pill" data-set="weekly-side">🥗 1주 반찬</button>
+            <button type="button" class="preset-pill" data-set="room-essentials">🍳 자취 필수 4종</button>
+          </div>
+        </div>
+
+        <!-- 5대 카테고리 가로 스크롤 알약 탭 -->
+        <div class="section-block">
+          <div id="category-tablist" class="h-scroll-row category-tablist" role="tablist" aria-label="5대 식재료 카테고리">
+            <!-- JS 렌더링 -->
+          </div>
+
+          <!-- 선택된 카테고리 제목 + 품목 추가 버튼 -->
+          <div class="category-bar">
+            <div class="category-bar-text">
+              <h2 id="active-category-title" class="category-heading">🥬 신선·채소/과일</h2>
+              <p id="shelf-category-meta" class="category-trait"></p>
+            </div>
+            <button type="button" id="open-add-item-btn" class="mini-outline-btn">
+              + 품목 추가
+            </button>
+          </div>
+
+          <!-- 2열 식재료 카드 그리드 -->
+          <div id="product-grid" class="product-grid">
+            <!-- JS 렌더링 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================
+           탭 2: 🧊 내 냉장고 (잔여 식재료 추적)
+           =================================================== -->
+      <section id="panel-fridge" class="tab-panel" role="tabpanel" aria-labelledby="tab-fridge" hidden>
+        <div class="panel-top">
+          <h2 class="panel-heading">🧊 내 냉장고 관리</h2>
+          <p class="panel-sub">장보기 후 남은 식재료를 기한 내 알뜰하게 소비해 보세요.</p>
+        </div>
+
+        <div id="fridge-summary" class="fridge-summary-grid" aria-live="polite">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <div id="fridge-list" class="fridge-stack" aria-live="polite">
+          <!-- JS 렌더링 -->
+        </div>
+      </section>
+
+      <!-- ===================================================
+           탭 3: 📊 소비 리포트 (월간 패턴 분석 & 성적표)
+           =================================================== -->
+      <section id="panel-report" class="tab-panel" role="tabpanel" aria-labelledby="tab-report" hidden>
+        <div class="panel-top">
+          <span id="report-month-pill" class="sdg-badge">이번 달 리포트</span>
+          <h2 class="panel-heading">📊 이번 달 소비 리포트</h2>
+        </div>
+
+        <div class="report-action-row">
+          <button type="button" id="open-scorecard-btn" class="action-orange-btn">
+            🏆 소비 성적표 카드
+          </button>
+          <button type="button" id="fill-sample-btn" class="action-green-btn">
+            샘플 채우기
+          </button>
+          <button type="button" id="reset-all-btn" class="action-gray-btn">
+            초기화
+          </button>
+        </div>
+
+        <!-- 4대 핵심 지표 (2x2) -->
+        <div id="report-kpi-grid" class="kpi-grid" aria-live="polite">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <!-- 맞춤형 AI 코칭 피드백 카드 -->
+        <div id="coaching-box" class="coaching-box" aria-live="polite">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <!-- 카테고리별 소비 vs 잔여/폐기 막대 그래프 (중첩 박스 제거) -->
+        <div class="report-block">
+          <div class="card-head-stack">
+            <h3 class="section-subheading">카테고리별 소비 vs 잔여 · 폐기 비율</h3>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="legend-dot is-green"></span>소비 예정량</span>
+              <span class="legend-item"><span class="legend-dot is-orange"></span>잔여 · 폐기량</span>
+            </div>
+          </div>
+          <div id="report-category-chart" class="pattern-chart">
+            <!-- JS 렌더링 -->
+          </div>
+        </div>
+
+        <!-- 이번 달 장보기 및 냉장고 처리 내역 (중첩 박스 제거) -->
+        <div class="report-block">
+          <h3 id="history-caption" class="section-subheading">이번 달 상세 내역</h3>
+          <div id="report-history-list" class="history-card-list" aria-labelledby="history-caption">
+            <!-- JS 렌더링 -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 탭 1 전용: 하단 플로팅 요약 바 (Floating Cart Bar) -->
+    <div id="floating-cart-bar" class="floating-cart-bar" hidden>
+      <button type="button" id="open-receipt-btn" class="floating-cart-trigger" aria-label="실시간 비교 영수증 열기">
+        <div class="floating-cart-info">
+          <strong id="floating-cart-main" class="floating-main-line">🛒 0개 품목 · 맞춤 조합 0원</strong>
+          <span id="floating-cart-sub" class="floating-sub-line">대용량 대비 0원 절약 · 잔여 0g 감축</span>
+        </div>
+        <span class="floating-pill-cta">영수증 ▲</span>
+      </button>
+    </div>
+
+    <!-- 하단 고정 탭 바 (Bottom Navigation Bar, 64px) -->
+    <nav class="bottom-nav" aria-label="하단 메인 메뉴">
+      <div class="bottom-tablist" role="tablist" aria-label="앱 화면 전환">
+        <button type="button" id="tab-shop" class="bottom-tab" role="tab" aria-selected="true" tabindex="0" data-tab="shop">
+          <span class="bottom-tab-icon" aria-hidden="true">🛒</span>
+          <span class="bottom-tab-label">장보기</span>
+        </button>
+        <button type="button" id="tab-fridge" class="bottom-tab" role="tab" aria-selected="false" tabindex="-1" data-tab="fridge">
+          <span class="bottom-tab-icon-wrap">
+            <span class="bottom-tab-icon" aria-hidden="true">🧊</span>
+            <span id="fridge-count-badge" class="nav-badge is-zero" aria-label="남은 식재료 개수">0</span>
+          </span>
+          <span class="bottom-tab-label">내 냉장고</span>
+        </button>
+        <button type="button" id="tab-report" class="bottom-tab" role="tab" aria-selected="false" tabindex="-1" data-tab="report">
+          <span class="bottom-tab-icon" aria-hidden="true">📊</span>
+          <span class="bottom-tab-label">소비 리포트</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- 토스트 알림 -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- ===================================================
+       바텀 시트 1: 실시간 비교 영수증 (Paper Receipt Style)
+       =================================================== -->
+  <dialog id="receipt-sheet" class="bottom-sheet" closedby="any" aria-labelledby="receipt-sheet-title">
+    <div class="sheet-shell receipt-paper">
+      <div class="sheet-handle-wrap" aria-hidden="true">
+        <span class="sheet-handle"></span>
+      </div>
+
+      <div class="sheet-header">
+        <h1 id="receipt-sheet-title" class="sheet-title">실시간 비교 영수증</h1>
+        <div class="sheet-header-actions">
+          <button type="button" id="clear-cart-btn" class="sheet-ghost-btn">비우기</button>
+          <button type="button" id="close-receipt-btn" class="sheet-close-btn" aria-label="닫기">✕</button>
+        </div>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <!-- 장식용 CSS 바코드 & 코드명 -->
+        <div class="receipt-barcode-block" aria-hidden="true">
+          <div class="css-barcode"></div>
+          <span class="barcode-code">SDGs-12.3-SMART-RECEIPT</span>
+        </div>
+
+        <hr class="receipt-dashed">
+
+        <!-- 담긴 품목 리스트 -->
+        <div id="cart-items-list" class="cart-list" aria-live="polite">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <hr class="receipt-dashed">
+
+        <!-- 핵심 2단 비교 카드 (전부 대용량 vs 똑똑한 맞춤 조합) -->
+        <div id="scenario-box" class="scenario-box">
+          <!-- JS 렌더링 -->
+        </div>
+
+        <!-- 실제 종이 영수증 지그재그(톱니) 절취선 -->
+        <div class="receipt-zigzag" aria-hidden="true"></div>
+
+        <!-- 장바구니 품목 소분·보관 팁 미니 박스 -->
+        <div class="receipt-tips-box">
+          <h2 class="receipt-tips-title">💡 담은 식재료 소분 · 보관 팁</h2>
+          <div id="storage-tips-list" class="receipt-tips-list">
+            <!-- JS 렌더링 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 시트 하단 고정 CTA -->
+      <div class="sheet-sticky-footer">
+        <button type="button" id="confirm-cart-btn" class="primary-btn full-width">
+          이 조합으로 장보기 확정하기
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===================================================
+       바텀 시트 2: ⚡ 현장 1:1 빠른 비교
+       =================================================== -->
+  <dialog id="quick-compare-dialog" class="bottom-sheet" closedby="any" aria-labelledby="quick-dialog-title">
+    <div class="sheet-shell">
+      <div class="sheet-handle-wrap" aria-hidden="true">
+        <span class="sheet-handle"></span>
+      </div>
+
+      <div class="sheet-header">
+        <div>
+          <h1 id="quick-dialog-title" class="sheet-title">⚡ 현장 1:1 빠른 비교</h1>
+          <p class="sheet-sub">마트 매대 앞에서 5초 만에 실질 가성비 판정</p>
+        </div>
+        <button type="button" id="close-quick-dialog-btn" class="sheet-close-btn" aria-label="닫기">✕</button>
+      </div>
+
+      <form id="quick-compare-form" class="sheet-scroll-body sheet-form" novalidate>
+        <div class="field-grid-2">
+          <div class="form-field">
+            <label for="qc-name">품목명</label>
+            <input type="text" id="qc-name" value="현장 비교 상품" placeholder="예: 삼겹살, 딸기" autofocus>
+          </div>
+          <div class="form-field">
+            <label for="qc-usage">예상 사용량 (g/ml)</label>
+            <input type="number" id="qc-usage" value="400" min="1" step="10" inputmode="numeric">
+          </div>
+        </div>
+
+        <fieldset class="sheet-fieldset">
+          <legend>보관 방식 선택</legend>
+          <div class="qc-storage-group">
+            <label class="qc-radio-pill">
+              <input type="radio" name="qcStorage" value="short" checked>
+              <span>🥬 단기 신선 보관</span>
+            </label>
+            <label class="qc-radio-pill">
+              <input type="radio" name="qcStorage" value="long">
+              <span>❄️ 냉동 · 장기 보관</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="sheet-fieldset">
+          <legend>Option A · 소용량</legend>
+          <div class="field-grid-2">
+            <div class="form-field">
+              <label for="qc-small-vol">용량 (g/ml)</label>
+              <input type="number" id="qc-small-vol" value="500" min="1" step="10" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label for="qc-small-price">가격 (원)</label>
+              <input type="number" id="qc-small-price" value="5000" min="1" step="100" inputmode="numeric">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="sheet-fieldset">
+          <legend>Option B · 대용량</legend>
+          <div class="field-grid-2">
+            <div class="form-field">
+              <label for="qc-large-vol">용량 (g/ml)</label>
+              <input type="number" id="qc-large-vol" value="1000" min="1" step="10" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label for="qc-large-price">가격 (원)</label>
+              <input type="number" id="qc-large-price" value="8000" min="1" step="100" inputmode="numeric">
+            </div>
+          </div>
+        </fieldset>
+
+        <div id="qc-result-area" class="qc-result-area" aria-live="polite">
+          <!-- JS 렌더링 -->
+        </div>
+      </form>
+
+      <div class="sheet-sticky-footer">
+        <button type="button" id="qc-add-to-cart-btn" class="primary-btn full-width">
+          현재 장바구니에 이 품목 추가하기
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===================================================
+       바텀 시트 3: + 새 품목 추가
+       =================================================== -->
+  <dialog id="add-item-dialog" class="bottom-sheet" closedby="any" aria-labelledby="add-dialog-title">
+    <div class="sheet-shell">
+      <div class="sheet-handle-wrap" aria-hidden="true">
+        <span class="sheet-handle"></span>
+      </div>
+
+      <div class="sheet-header">
+        <div>
+          <h1 id="add-dialog-title" class="sheet-title">새 식재료 품목 등록</h1>
+          <p id="dialog-cat-hint" class="sheet-sub"></p>
+        </div>
+        <button type="button" id="close-dialog-btn" class="sheet-close-btn" aria-label="닫기">✕</button>
+      </div>
+
+      <form id="add-item-form" class="sheet-scroll-body sheet-form" novalidate>
+        <div class="field-grid-2">
+          <div class="form-field">
+            <label for="new-name">품목명</label>
+            <input type="text" id="new-name" required placeholder="예: 애호박, 목살" autofocus>
+          </div>
+          <div class="form-field">
+            <label for="new-unit">단위</label>
+            <select id="new-unit">
+              <option value="g">무게 (g)</option>
+              <option value="ml">부피 (ml)</option>
+              <option value="구">개수 (구)</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="sheet-fieldset">
+          <legend>기준 분량 (1끼 / 2~3끼 / 1주)</legend>
+          <div class="field-grid-3">
+            <div class="form-field">
+              <label for="new-meal1">1끼</label>
+              <input type="number" id="new-meal1" min="1" required placeholder="150" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label for="new-meal23">2~3끼</label>
+              <input type="number" id="new-meal23" min="1" required placeholder="350" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label for="new-week1">1주</label>
+              <input type="number" id="new-week1" min="1" required placeholder="700" inputmode="numeric">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="sheet-fieldset">
+          <legend>소용량 제품</legend>
+          <div class="field-grid-2">
+            <div class="form-field">
+              <label for="new-small-vol">용량</label>
+              <input type="number" id="new-small-vol" min="1" required placeholder="400" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label for="new-small-price">가격 (원)</label>
+              <input type="number" id="new-small-price" min="1" required placeholder="2500" inputmode="numeric">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="sheet-fieldset">
+          <legend>대용량 제품</legend>
+          <div class="field-grid-2">
+            <div class="form-field">
+              <label for="new-large-vol">용량</label>
+              <input type="number" id="new-large-vol" min="1" required placeholder="1200" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label for="new-large-price">가격 (원)</label>
+              <input type="number" id="new-large-price" min="1" required placeholder="5200" inputmode="numeric">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-field">
+          <label for="new-tip">소분 · 보관 팁 (선택)</label>
+          <input type="text" id="new-tip" placeholder="예: 1회분씩 소분해 밀폐 보관하세요.">
+        </div>
+
+        <p id="modal-error" class="error-text" aria-live="polite"></p>
+
+        <div class="sheet-inline-actions">
+          <button type="button" id="cancel-dialog-btn" class="secondary-btn">취소</button>
+          <button type="submit" class="primary-btn">매대에 등록</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- ===================================================
+       바텀 시트 4: 🏆 나의 이번 달 소비 성적표 카드
+       =================================================== -->
+  <dialog id="scorecard-dialog" class="bottom-sheet" closedby="any" aria-labelledby="scorecard-dialog-title">
+    <div class="sheet-shell">
+      <div class="sheet-handle-wrap" aria-hidden="true">
+        <span class="sheet-handle"></span>
+      </div>
+
+      <div class="sheet-header">
+        <h1 id="scorecard-dialog-title" class="sheet-title">🏆 나의 이번 달 소비 성적표</h1>
+        <button type="button" id="close-scorecard-btn" class="sheet-close-btn" aria-label="닫기">✕</button>
+      </div>
+
+      <div class="sheet-scroll-body">
+        <div id="scorecard-preview" class="scorecard-preview">
+          <!-- JS 렌더링 -->
+        </div>
+      </div>
+
+      <div class="sheet-sticky-footer sheet-footer-2col">
+        <button type="button" id="download-scorecard-btn" class="primary-btn">
+          이미지로 저장 (PNG)
+        </button>
+        <button type="button" id="copy-scorecard-btn" class="outline-green-btn">
+          결과 텍스트 복사
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
